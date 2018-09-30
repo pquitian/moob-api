@@ -10,7 +10,7 @@ const passport = require('passport');
 
 //Config imports
 require('./configs/db.config');
-require('./configs/passport.config').setup(passport)
+require('./configs/passport.config').setup(passport);
 
 //Routers
 const indexRouter = require('./routes/index');
