@@ -19,8 +19,17 @@ module.exports.create = (req, res, next) => {
 }
 
 module.exports.delete = (req, res, next) => {
-    User.findOneAndDelete({ _id: req.body.id  })
-        .then()
-        .catch()
+    //TODO: delete user's vehicles and related comments
+    User.findOneAndDelete({ _id: req.params.id  })
+        .then((user) => {
+            if(user) {
+                res.status(204).json();
+            } else {
+                throw createError(404, 'User not found');
+            }
+        })
+        .catch((error) => {
+            next(error);
+        })
 }
 

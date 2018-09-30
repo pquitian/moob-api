@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
     avatar: {
         type: String, 
         default: ' '
+        //TODO: add a default image
     }
 }, { 
     timestamps: true, 
