@@ -10,6 +10,7 @@ const passport = require('passport');
 
 //Config imports
 require('./configs/db.config');
+require('./configs/passport.config').setup(passport)
 
 //Routers
 const indexRouter = require('./routes/index');
@@ -23,6 +24,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: process.env.COOKIE_SECRET || 'Super Secret',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    maxAge: 1367800020
+  }
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Routing
 app.use('/', indexRouter);
