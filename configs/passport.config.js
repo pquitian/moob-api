@@ -1,5 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user.model');
+const createError = require('http-errors');
 
 module.exports.setup = (passport) => {
     passport.serializeUser((user, next) => {
@@ -18,13 +19,15 @@ module.exports.setup = (passport) => {
     }, (email,password, next) => {
         User.findOne({ email: email })
             .then(user => {
-                if (user) {
+                if (!user) {
                     throw createError(401, 'Invalid email or password')
                 } else {
                     //TODO: call user's method to check password 
+                    next(null, user);
                 }
                 
             })
             .catch(error => next(error));
     }));
 }
+
