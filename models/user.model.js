@@ -19,12 +19,13 @@ const userSchema = new mongoose.Schema({
     }, 
     avatar: {
         type: String, 
-        default: ' '
+        default: ''
         //TODO: add a default image
     }, 
     vehicles: {
         type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Vehicle' 
+        ref: 'Vehicle', 
+        default: []
     }
 }, { 
     timestamps: true, 
