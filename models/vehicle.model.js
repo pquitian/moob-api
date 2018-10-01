@@ -21,6 +21,7 @@ const vehicleSchema = new mongoose.Schema({
         //TODO: add default image
     }, 
     licensePlate: {
+        type: String,
         unique: true, 
         required: 'License Plate is required just for security purposes'
     }, 

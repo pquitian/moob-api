@@ -5,17 +5,25 @@ const Vehicle = require('./vehicle.model');
 const commuteSchema = new mongoose.Schema({
     origin: {
         type: {
-            type: String
+            type: String, 
+            enum: ['Point'],
+            required: true
         },
-        coordinates: [Number], 
-        required: 'Origin is required'
+        coordinates: {
+            type: [Number],
+            required: true
+        }
     },
     destination: {
         type: {
-            type: String
-        }, 
-        coordinates: [Number], 
-        required: 'Destination is required'
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        } 
     },
     vehicle: {
         type: mongoose.Schema.Types.ObjectId, 
