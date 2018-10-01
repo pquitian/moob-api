@@ -28,6 +28,10 @@ const vehicleSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId], 
         ref: 'User',
         required: 'At least one driver is required'
+    }, 
+    fuelType: {
+        type: String,
+        enum: ['gasoline', 'diesel', 'hybrid', 'electric', 'LPG']
     }
 });
 
