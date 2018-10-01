@@ -41,6 +41,17 @@ const commuteSchema = new mongoose.Schema({
         required: 'Arrival time is required'
     }
     //TODO: Add comments to model
+}, {
+    timestamps: true, 
+    toJSON: {
+        transform: (doc, ret) => {
+            ret.id = doc._id;
+            delete ret._id;
+            delete ret.__v;
+
+            return ret;
+        }
+    }
 })
 
 module.exports = mongoose.model('Commute', commuteSchema);
