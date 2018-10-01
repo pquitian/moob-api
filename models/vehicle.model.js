@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require('./user.model');
 
 const vehicleSchema = new mongoose.Schema({
     brand: {
@@ -18,6 +19,15 @@ const vehicleSchema = new mongoose.Schema({
         type: String, 
         default: ' '
         //TODO: add default image
+    }, 
+    licensePlate: {
+        unique: true, 
+        required: 'License Plate is required just for security purposes'
+    }, 
+    drivers: {
+        type: [mongoose.Schema.Types.ObjectId], 
+        ref: 'User',
+        required: 'At least one driver is required'
     }
 });
 

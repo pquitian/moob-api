@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const SALT_FACTOR = process.env.SALT_FACTOR; 
+const Vehicle = require('./vehicle.model');
 
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: 'Name is required'
+        required: 'Name is required', 
+        unique: true
     }, 
     email: {
         type: String,
@@ -19,6 +21,10 @@ const userSchema = new mongoose.Schema({
         type: String, 
         default: ' '
         //TODO: add a default image
+    }, 
+    vehicles: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Vehicle' 
     }
 }, { 
     timestamps: true, 
