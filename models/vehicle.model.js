@@ -24,11 +24,6 @@ const vehicleSchema = new mongoose.Schema({
         unique: true, 
         required: 'License Plate is required just for security purposes'
     }, 
-    drivers: {
-        type: [mongoose.Schema.Types.ObjectId], 
-        ref: 'User',
-        required: 'At least one driver is required'
-    }, 
     fuelType: {
         type: String,
         enum: ['gasoline', 'diesel', 'hybrid', 'electric', 'LPG']
