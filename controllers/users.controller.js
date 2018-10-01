@@ -1,6 +1,8 @@
-const User = require('../models/user.model');
 const mongoose = require('mongoose');
 const createError = require('http-errors')
+const User = require('../models/user.model');
+const Vehicle = require('../models/vehicle.model');
+const Commute = require('../models/commute.model');
 
 module.exports.create = (req, res, next) => {
     User.findOne({ email: req.body.email })

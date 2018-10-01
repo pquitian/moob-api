@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const passport = require('passport');
 
+// Log in
 module.exports.create = (req, res, next) => {
     passport.authenticate('auth-local', (error, user) => {
         if (error) {
@@ -17,6 +18,7 @@ module.exports.create = (req, res, next) => {
     })(req, res, next);
 }
 
+//Log out 
 module.exports.delete = (req, res, next) => {
     req.logout();
     res.status(204).json();
