@@ -22,8 +22,15 @@ module.exports.setup = (passport) => {
                 if (!user) {
                     throw createError(401, 'Invalid email or password')
                 } else {
-                    //TODO: call user's method to check password 
-                    next(null, user);
+                    return User.checkPassword(password)
+                        .then(match => {
+                            if (match) {
+                                next(null, user);
+                            } else {
+                                throw createError(401, 'Invalid email or password');
+                            }
+                        }) 
+                    
                 }
                 
             })
