@@ -41,7 +41,7 @@ app.use(passport.session());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/sessions', sessionsRouter);
-app.use('/vehicles', vehiclesRouter);
+app.use('/users/:userId/vehicles', vehiclesRouter);
 
 app.use(function (req, res, next) {
     next(createError(404));

@@ -11,7 +11,7 @@ const vehicleSchema = new mongoose.Schema({
         required: 'Model is required'
     },
     seats: {
-        type: String,
+        type: Number,
         required: 'Number of seats is required'
     }, 
     year: String,
@@ -24,10 +24,15 @@ const vehicleSchema = new mongoose.Schema({
         type: String,
         unique: true, 
         required: 'License Plate is required just for security purposes'
+        //TODO: add validation max number and match
     }, 
-    fuelType: {
+    fuel: {
         type: String,
         enum: ['gasoline', 'diesel', 'hybrid', 'electric', 'LPG']
+    }, 
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 }, {
     timestamps: true, 

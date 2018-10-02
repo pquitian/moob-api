@@ -7,7 +7,7 @@ router.post('/',
     authMiddleware.isAuthenticated, 
     vehiclesController.create);
 
-router.delete('/', 
+router.delete('/:vehicleId', 
     authMiddleware.isAuthenticated, 
     vehiclesController.delete);
 

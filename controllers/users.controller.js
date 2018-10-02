@@ -21,17 +21,18 @@ module.exports.create = (req, res, next) => {
 }
 
 module.exports.delete = (req, res, next) => {
-    //TODO: delete user's vehicles and related comments
-    User.findOneAndDelete({ _id: req.params.id  })
-        .then((user) => {
-            if(user) {
-                res.status(204).json();
-            } else {
-                throw createError(404, 'User not found');
-            }
-        })
-        .catch((error) => {
-            next(error);
-        })
+    Promise.all([
+        User.findOneAndDelete({ _id: req.params.userId  }),
+        Vehicle.deleteMany({ owner: mongoose.Types.ObjectId(req.params.userId)  }),
+        Commute.deleteMany({ driver: mongoose.Types.ObjectId(req.params.userId)  })])
+            .then(([user]) => {
+                if(user) {
+                    res.status(204).json();
+                } else {
+                    throw createError(404, 'User not found');
+                }
+            })
+            .catch((error) => {
+                next(error);
+            })
 }
-

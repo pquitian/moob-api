@@ -22,7 +22,7 @@ module.exports.setup = (passport) => {
                 if (!user) {
                     throw createError(401, 'Invalid email or password')
                 } else {
-                    return User.checkPassword(password)
+                    return user.checkPassword(password)
                         .then(match => {
                             if (match) {
                                 next(null, user);
@@ -30,7 +30,6 @@ module.exports.setup = (passport) => {
                                 throw createError(401, 'Invalid email or password');
                             }
                         }) 
-                    
                 }
                 
             })
