@@ -1,8 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const vehiclesController = require('../controllers/vehicles.controller');
+const authMiddleware = require('../middlewares/auth.middleware');
 
-router.post('/', vehiclesController.create);
-router.delete('/', vehiclesController.delete);
+router.post('/', 
+    authMiddleware.isAuthenticated, 
+    vehiclesController.create);
+
+router.delete('/', 
+    authMiddleware.isAuthenticated, 
+    vehiclesController.delete);
 
 module.exports = router;
