@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const createError = require('http-errors');
 const Vehicle = require('../models/vehicle.model');
 const User = require('../models/user.model');
 
@@ -37,4 +38,21 @@ module.exports.delete = (req, res, next) => {
         .catch((error) => {
             next(error);
         })
+    // Promise.all([
+    //     Vehicle.findOneAndDelete({ _id: req.params.vehicleId}),
+    //     User.findOneAndUpdate({ _id: req.user.id }, { $unset: { vehicles: { $in: [req.params.vehicleId] } } }, { new: true } )
+    // ])
+    // .then(vehicle => {
+    //             if(vehicle) {
+    //                 console.log('Borrado vehículo')
+    //                 res.status(204).json();
+    //             } else {
+    //                 throw createError(404, 'Vehicle not found');
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             next(error);
+    //         })
+
 };
+

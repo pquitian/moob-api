@@ -1,6 +1,8 @@
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user.model');
+const Vehicles = require('../models/vehicle.model');
 const createError = require('http-errors');
+
 
 module.exports.setup = (passport) => {
     passport.serializeUser((user, next) => {
@@ -25,7 +27,10 @@ module.exports.setup = (passport) => {
                     return user.checkPassword(password)
                         .then(match => {
                             if (match) {
-                                next(null, user);
+                                Vehicles.populate(user, {path: 'vehicles'})
+                                    .then(user => {
+                                        next(null, user);
+                                    })
                             } else {
                                 throw createError(401, 'Invalid email or password');
                             }
