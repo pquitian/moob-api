@@ -13,6 +13,14 @@ module.exports.create = (req, res, next) => {
         .catch(error => next(error))
 }
 
+module.exports.list = (req, res, next) => {
+    Commute.find()
+        .then(commute => { 
+            res.json(commute)
+        })
+        .catch(error => next(error))
+}
+
 module.exports.get = (req, res, next) => {
     Commute.findById(req.params.commuteId)
         .then(commute => { 
