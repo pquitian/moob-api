@@ -7,6 +7,10 @@ router.post('/',
     authMiddleware.isAuthenticated, 
     commutesController.create);
 
+router.get('/:commuteId',
+    authMiddleware.isAuthenticated, 
+    commutesController.get);
+
 router.delete('/:commuteId',
     authMiddleware.isAuthenticated, 
     commutesController.delete);

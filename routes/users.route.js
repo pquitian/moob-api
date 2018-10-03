@@ -5,6 +5,9 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 router.post('/', usersController.create);
 
+router.get('/:id', 
+    authMiddleware.isAuthenticated,usersController.get);
+
 router.delete('/:userId', 
     authMiddleware.isAuthenticated, 
     usersController.delete); //TODO: Add owner's middleware

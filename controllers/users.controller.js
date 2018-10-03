@@ -20,6 +20,15 @@ module.exports.create = (req, res, next) => {
         .catch(error => next(error));
 }
 
+module.exports.get = (req, res, next) => {
+    User.findById(req.params.id)
+        //.populate('vehicle')
+        .then(user => { 
+            res.json(user);
+        })
+        .catch(error => next(error));
+}
+
 module.exports.delete = (req, res, next) => {
     Promise.all([
         User.findOneAndDelete({ _id: req.params.userId  }),
