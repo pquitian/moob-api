@@ -29,6 +29,7 @@ module.exports.get = (req, res, next) => {
         .catch(error => next(error));
 }
 
+
 module.exports.delete = (req, res, next) => {
     Commute.findOneAndDelete({ _id: req.params.commuteId })
         .then(com => {

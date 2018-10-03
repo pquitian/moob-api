@@ -21,12 +21,20 @@ module.exports.create = (req, res, next) => {
 }
 
 module.exports.get = (req, res, next) => {
-    User.findById(req.params.id)
+    User.findById(req.params.userId)
         //.populate('vehicle')
         .then(user => { 
             res.json(user);
         })
         .catch(error => next(error));
+}
+
+module.exports.update = (req, res, next) => {  
+    User.findByIdAndUpdate(req.params.userId, req.body)
+      .then(user => {
+          res.status(200).json(user)
+        })
+      .catch(error => next(error));
 }
 
 module.exports.delete = (req, res, next) => {

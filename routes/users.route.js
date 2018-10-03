@@ -5,8 +5,13 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 router.post('/', usersController.create);
 
-router.get('/:id', 
-    authMiddleware.isAuthenticated,usersController.get);
+router.get('/:userId', 
+    authMiddleware.isAuthenticated,
+    usersController.get);
+
+router.get('/:userId', 
+    authMiddleware.isAuthenticated,
+    usersController.update);
 
 router.delete('/:userId', 
     authMiddleware.isAuthenticated, 
