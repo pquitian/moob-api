@@ -9,7 +9,7 @@ router.get('/:userId',
     authMiddleware.isAuthenticated,
     usersController.get);
 
-router.get('/:userId', 
+router.patch('/:userId', 
     authMiddleware.isAuthenticated,
     usersController.update);
 
