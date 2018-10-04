@@ -29,10 +29,6 @@ const vehicleSchema = new mongoose.Schema({
     fuel: {
         type: String,
         enum: ['gasoline', 'diesel', 'hybrid', 'electric', 'LPG']
-    }, 
-    owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
     }
 }, {
     timestamps: true, 
