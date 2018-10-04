@@ -17,7 +17,7 @@ const vehicleSchema = new mongoose.Schema({
     year: String,
     image: {
         type: String, 
-        default: ' '
+        default: ''
         //TODO: add default image
     }, 
     licensePlate: {

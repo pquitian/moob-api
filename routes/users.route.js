@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const usersController = require('../controllers/users.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
+const upload = require('../configs/multer.config');
 
 router.post('/', usersController.create);
 
@@ -11,6 +12,7 @@ router.get('/:userId',
 
 router.patch('/:userId', 
     authMiddleware.isAuthenticated,
+    upload.single('avatar'),
     usersController.update);
 
 router.delete('/:userId', 

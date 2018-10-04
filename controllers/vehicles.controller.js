@@ -9,6 +9,9 @@ module.exports.create = (req, res, next) => {
         .then(vehicle => {
             if (!vehicle) {
                 vehicle = new Vehicle(req.body);
+                if (req.files) {
+                    vehicle.image = `${req.protocol}://${req.get('host')}/uploads/${file.filename}`;
+                }
                 vehicle.save()
                     .then(vehicle => {
                         User.findByIdAndUpdate({ _id: req.user.id }, {$push: { vehicles: vehicle.id }}, { new: true })
@@ -33,10 +36,13 @@ module.exports.get = (req, res, next) => {
 
 module.exports.update = (req, res, next) => {  
     Vehicle.findByIdAndUpdate(req.params.vehicleId, req.body)
-      .then(vehicle => {
-          res.status(200).json(vehicle)
+        .then(vehicle => {
+            if (req.files) {
+                vehicle.image = `${req.protocol}://${req.get('host')}/uploads/${file.filename}`;
+            }
+            res.status(200).json(vehicle)
         })
-      .catch(error => next(error));
+        .catch(error => next(error));
 }
 
         //My kitten Frikandel wrote this lines. She wants to be a programmer and I'm not going to stop her

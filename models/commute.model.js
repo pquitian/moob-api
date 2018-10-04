@@ -50,7 +50,6 @@ const commuteSchema = new mongoose.Schema({
         type: Date, 
         required: 'Arrival time is required'
     }
-    //TODO: Add comments to model
 }, {
     timestamps: true, 
     toJSON: {

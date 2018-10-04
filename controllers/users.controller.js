@@ -31,10 +31,13 @@ module.exports.get = (req, res, next) => {
 
 module.exports.update = (req, res, next) => {  
     User.findByIdAndUpdate(req.params.userId, req.body, { new: true })
-      .then(user => {
-          res.status(200).json(user)
+        .then(user => {
+            if (req.files) {
+                user.avatar = `${req.protocol}://${req.get('host')}/uploads/${file.filename}`;
+            }
+            res.status(200).json(user)
         })
-      .catch(error => next(error));
+        .catch(error => next(error));
 }
 
 module.exports.delete = (req, res, next) => {
