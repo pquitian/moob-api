@@ -22,7 +22,7 @@ module.exports.create = (req, res, next) => {
 
 module.exports.get = (req, res, next) => {
     User.findById(req.params.userId)
-        //.populate('vehicle')
+        .populate({path: 'vehicles', model: 'Vehicle' })
         .then(user => { 
             res.json(user);
         })
@@ -30,7 +30,7 @@ module.exports.get = (req, res, next) => {
 }
 
 module.exports.update = (req, res, next) => {  
-    User.findByIdAndUpdate(req.params.userId, req.body)
+    User.findByIdAndUpdate(req.params.userId, req.body, { new: true })
       .then(user => {
           res.status(200).json(user)
         })

@@ -24,7 +24,7 @@ module.exports.create = (req, res, next) => {
 
 module.exports.get = (req, res, next) => {
     Vehicle.findById(req.params.vehicleId)
-        //.populate()
+        //.populate() ownerF
         .then(vehicle => { 
             res.json(vehicle);
         })

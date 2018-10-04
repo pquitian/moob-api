@@ -15,6 +15,7 @@ module.exports.create = (req, res, next) => {
 
 module.exports.list = (req, res, next) => {
     Commute.find()
+    //TODO populate() vehicle, drivers, passengers
         .then(commute => { 
             res.json(commute)
         })

@@ -20,17 +20,15 @@ module.exports.setup = (passport) => {
         passwordField: 'password'
     }, (email,password, next) => {
         User.findOne({ email: email })
+            .populate({path: 'vehicles', model: 'Vehicle'})
             .then(user => {
                 if (!user) {
                     throw createError(401, 'Invalid email or password')
                 } else {
-                    return user.checkPassword(password)
+                    user.checkPassword(password)
                         .then(match => {
                             if (match) {
-                                Vehicles.populate(user, {path: 'vehicles'})
-                                    .then(user => {
-                                        next(null, user);
-                                    })
+                                next(null, user);
                             } else {
                                 throw createError(401, 'Invalid email or password');
                             }
