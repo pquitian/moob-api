@@ -7,6 +7,14 @@ router.post('/',
     authMiddleware.isAuthenticated, 
     vehiclesController.create);
 
+router.get('/:vehicleId', 
+    authMiddleware.isAuthenticated,
+    vehiclesController.get);
+
+router.patch('/:vehicleId', 
+    authMiddleware.isAuthenticated,
+    vehiclesController.update);
+
 router.delete('/:vehicleId', 
     authMiddleware.isAuthenticated, 
     vehiclesController.delete);

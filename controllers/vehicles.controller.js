@@ -22,6 +22,23 @@ module.exports.create = (req, res, next) => {
 
 };
 
+module.exports.get = (req, res, next) => {
+    Vehicle.findById(req.params.vehicleId)
+        //.populate()
+        .then(vehicle => { 
+            res.json(vehicle);
+        })
+        .catch(error => next(error));
+}
+
+module.exports.update = (req, res, next) => {  
+    Vehicle.findByIdAndUpdate(req.params.vehicleId, req.body)
+      .then(vehicle => {
+          res.status(200).json(vehicle)
+        })
+      .catch(error => next(error));
+}
+
         //My kitten Frikandel wrote this lines. She wants to be a programmer and I'm not going to stop her
         //hyyy.,,,,,,,,,,,,t6 n0
 //lñññññññññññññññññññññññññññññññññññññññññññññññññññññññññññññññnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnh
