@@ -18,6 +18,7 @@ const usersRouter = require('./routes/users.route');
 const sessionsRouter = require('./routes/sessions.route');
 const vehiclesRouter = require('./routes/vehicles.route');
 const commutesRouter = require('./routes/commutes.route');
+const scoresRouter = require('./routes/scores.route');
 
 const app = express();
 
@@ -43,7 +44,9 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/sessions', sessionsRouter);
 app.use('/commutes/', commutesRouter);
+app.use('/scores', scoresRouter);
 app.use('/users/:userId/vehicles', vehiclesRouter);
+
 
 app.use(function (req, res, next) {
     next(createError(404));
