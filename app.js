@@ -42,7 +42,7 @@ app.use(passport.session());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/sessions', sessionsRouter);
-app.use('/commutes', commutesRouter);
+app.use('/commutes/', commutesRouter);
 app.use('/users/:userId/vehicles', vehiclesRouter);
 
 app.use(function (req, res, next) {

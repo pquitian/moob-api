@@ -1,5 +1,6 @@
 const Commute = require('../models/commute.model');
 const Vehicles = require('../models/vehicle.model');
+const createError = require('http-errors');
 
 module.exports.create = (req, res, next) => {
     const commute = new Commute(req.body);
@@ -13,7 +14,7 @@ module.exports.create = (req, res, next) => {
         .catch(error => next(error))
 }
 
-module.exports.list = (req, res, next) => {
+module.exports.listAll = (req, res, next) => {
     Commute.find()
     //TODO populate() vehicle, drivers, passengers
         .then(commute => { 
@@ -22,7 +23,7 @@ module.exports.list = (req, res, next) => {
         .catch(error => next(error))
 }
 
-module.exports.get = (req, res, next) => {
+module.exports.getOne = (req, res, next) => {
     Commute.findById(req.params.commuteId)
         .then(commute => { 
             res.json(commute);
