@@ -5,7 +5,6 @@ const createError = require('http-errors');
 module.exports.create = (req, res, next) => {
     const commute = new Commute(req.body);
     commute.driver = req.user.id; 
-    console.log('Llegamos aquí --->', commute)
 
     commute.save()
         .then(com => {
@@ -26,14 +25,18 @@ module.exports.listAll = (req, res, next) => {
 module.exports.getOne = (req, res, next) => {
     Commute.findById(req.params.commuteId)
         .then(commute => { 
-            res.json(commute);
+            if (!commute) {
+                throw createError(404, 'Commute not found');
+            } else {
+                res.json(commute);
+            }
         })
         .catch(error => next(error));
 }
 
 
 module.exports.delete = (req, res, next) => {
-    Commute.findOneAndDelete({ _id: req.params.commuteId })
+    Commute.findOneAndDelete({ $and: [{ _id: req.params.commuteId }, { driver: req.user.id }]})
         .then(com => {
             if (com) {
                 res.status(204).json()
