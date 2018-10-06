@@ -46,3 +46,47 @@ module.exports.delete = (req, res, next) => {
         })
         .catch(error => next(error))
 }
+
+
+module.exports.filter = (req, res, next) => {
+    const sphereRadius = 6378.1 * 1000;
+    const radians = req.query.distance / sphereRadius;
+
+    console.log('departure-time: ', req.query.date  );
+
+    Promise.all([
+        Commute.find({
+            origin: {
+                $near: 
+                        { 
+                            $geometry: { type: 'Point', coordinates: [req.query.fromLat, req.query.fromLong] },
+                            $minDistance: 0, 
+                            $maxDistance: 1000 
+                        }
+            }, 
+            departureTime: { 
+                $gte:new Date("2018-10-05 21:40:04Z"), 
+                $lt: new Date("2018-10-05 21:48:04Z") 
+            }
+        
+        }),
+        Commute.find({
+            destination: {
+                $near: 
+                    { 
+                        $geometry: { type: 'Point', coordinates: [req.query.toLat, req.query.toLong] },
+                        $minDistance: 0,
+                        $maxDistance: 1000 
+                    }
+            }, 
+            departureTime: { 
+                $gte:new Date("2018-10-05 21:40:04Z"), 
+                $lt: new Date("2018-10-05 21:48:04Z") 
+            }
+        })
+    ]).then((values) => {
+        const uniques = values.filter((el, index, arr) => arr.map(x => x.id).indexOf(el.id) === index)
+        res.json(uniques);
+    })
+    .catch(error => next(error))
+}

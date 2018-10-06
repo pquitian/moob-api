@@ -9,7 +9,7 @@ router.post('/',
 
 router.get('/',
     authMiddleware.isAuthenticated, 
-    commutesController.listAll);
+    commutesController.filter);
 
 router.get('/:commuteId',
     authMiddleware.isAuthenticated, 

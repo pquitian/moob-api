@@ -43,6 +43,7 @@ const commuteSchema = new mongoose.Schema({
         default: []
     }, 
     departureTime: {
+        //TODO: validate date (not before right now)
         type: Date, 
         required: 'Departure time is required'
     }, 
@@ -62,5 +63,7 @@ const commuteSchema = new mongoose.Schema({
         }
     }
 })
+
+commuteSchema.index({"origin": "2dsphere", "destination": "2dsphere"}, {unique: true});
 
 module.exports = mongoose.model('Commute', commuteSchema);
