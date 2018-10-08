@@ -3,21 +3,22 @@ const Vehicles = require('../models/vehicle.model');
 const createError = require('http-errors');
 
 module.exports.create = (req, res, next) => {
+    const {
+        origin,
+        destination,
+        vehicle,
+        driver,
+        passengers,
+        departureTime,
+        arrivalTime
+    } = req.body;
+
     const commute = new Commute(req.body);
-    commute.driver = req.user.id; 
+    commute.driver = req.user.id;
 
     commute.save()
         .then(com => {
             res.status(201).json(com)
-        })
-        .catch(error => next(error))
-}
-
-module.exports.listAll = (req, res, next) => {
-    Commute.find()
-    //TODO populate() vehicle, drivers, passengers
-        .then(commute => { 
-            res.json(commute)
         })
         .catch(error => next(error))
 }
@@ -49,24 +50,25 @@ module.exports.delete = (req, res, next) => {
 
 
 module.exports.filter = (req, res, next) => {
-    const sphereRadius = 6378.1 * 1000;
-    const radians = req.query.distance / sphereRadius;
+    const dateBegin = req.query.date_from.toString();
+    const dateEnd = req.query.date_to.toString();
 
-    console.log('departure-time: ', req.query.date  );
+    console.log(dateBegin)
+    //TODO: conditionals if req.query is empty
 
     Promise.all([
         Commute.find({
             origin: {
                 $near: 
                         { 
-                            $geometry: { type: 'Point', coordinates: [req.query.fromLat, req.query.fromLong] },
+                            $geometry: { type: 'Point', coordinates: [req.query.from_lat, req.query.from_long] },
                             $minDistance: 0, 
-                            $maxDistance: 1000 
+                            $maxDistance: req.query.distance_from 
                         }
             }, 
             departureTime: { 
-                $gte:new Date("2018-10-05 21:40:04Z"), 
-                $lt: new Date("2018-10-05 21:48:04Z") 
+                $gte: new Date(dateBegin), 
+                $lt: new Date(dateEnd)  
             }
         
         }),
@@ -74,14 +76,14 @@ module.exports.filter = (req, res, next) => {
             destination: {
                 $near: 
                     { 
-                        $geometry: { type: 'Point', coordinates: [req.query.toLat, req.query.toLong] },
+                        $geometry: { type: 'Point', coordinates: [req.query.to_lat, req.query.to_long] },
                         $minDistance: 0,
-                        $maxDistance: 1000 
+                        $maxDistance: req.query.distance_to 
                     }
             }, 
             departureTime: { 
-                $gte:new Date("2018-10-05 21:40:04Z"), 
-                $lt: new Date("2018-10-05 21:48:04Z") 
+                $gte:new Date(dateBegin), 
+                $lt: new Date(dateEnd) 
             }
         })
     ]).then((values) => {
