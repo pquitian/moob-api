@@ -6,11 +6,13 @@ const createError = require('http-errors');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('passport');
+const cors = require('cors');
 
 
 //Config imports
 require('./configs/db.config');
 require('./configs/passport.config').setup(passport);
+const corsConfig = require('./configs/cors.config');
 
 //Routers
 const indexRouter = require('./routes/index');
@@ -27,6 +29,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors(corsConfig));
 app.use(session({
   secret: process.env.COOKIE_SECRET || 'Super Secret',
   resave: true,
