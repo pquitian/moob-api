@@ -44,7 +44,7 @@ const commuteSchema = new mongoose.Schema({
     }, 
     departureTime: {
         //TODO: validate date (not before right now)
-        type: Date, 
+        type: Date,
         required: 'Departure time is required'
     }, 
     arrivalTime: {
@@ -56,6 +56,8 @@ const commuteSchema = new mongoose.Schema({
     toJSON: {
         transform: (doc, ret) => {
             ret.id = doc._id;
+            ret.departureTime = doc.departureTime.toLocaleString();
+            ret.arrivalTime = doc.arrivalTime.toLocaleString();
             delete ret._id;
             delete ret.__v;
 
@@ -64,6 +66,7 @@ const commuteSchema = new mongoose.Schema({
     }
 })
 
-commuteSchema.index({"origin": "2dsphere", "destination": "2dsphere"}, {unique: true});
+commuteSchema.index({"origin": "2dsphere"});
+commuteSchema.index({"destination": "2dsphere"});
 
 module.exports = mongoose.model('Commute', commuteSchema);
