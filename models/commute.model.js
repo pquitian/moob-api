@@ -58,6 +58,12 @@ const commuteSchema = new mongoose.Schema({
             ret.id = doc._id;
             ret.departureTime = doc.departureTime.toLocaleString();
             ret.arrivalTime = doc.arrivalTime.toLocaleString();
+            const origin = doc.origin.coordinates;
+            const destination = doc.destination.coordinates;
+            delete ret.origin;
+            delete ret.destination;
+            ret.origin = origin; 
+            ret.destination = destination;
             delete ret._id;
             delete ret.__v;
 

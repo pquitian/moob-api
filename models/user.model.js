@@ -17,11 +17,6 @@ const userSchema = new mongoose.Schema({
         type: String, 
         required: 'Password is required'
     }, 
-    avatar: {
-        type: String, 
-        default: ''
-        //TODO: add a default image
-    }, 
     vehicles: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Vehicle', 
@@ -29,7 +24,11 @@ const userSchema = new mongoose.Schema({
     }
 }, { 
     timestamps: true, 
+    toObject: {
+        virtuals: true
+    },
     toJSON: {
+        virtuals: true,
         transform: (doc, ret) => {
             ret.id = doc._id;
             delete ret._id;
@@ -39,6 +38,11 @@ const userSchema = new mongoose.Schema({
         }
     }
 });
+
+userSchema.virtual('avatar')
+  .get(function() {
+    return `https://api.adorable.io/avatars/175/${this.id}.png`;
+})
 
 userSchema.pre('save', function save (next) {
     if (!this.isModified('password')) {
