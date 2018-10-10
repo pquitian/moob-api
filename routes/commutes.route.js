@@ -8,8 +8,11 @@ router.post('/',
     commutesController.create);
 
 router.get('/',
+    commutesController.listAll);
+
+/*router.get('/',
     authMiddleware.isAuthenticated, 
-    commutesController.filter);
+    commutesController.filter);*/
 
 router.get('/:commuteId',
     authMiddleware.isAuthenticated, 

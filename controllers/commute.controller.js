@@ -35,6 +35,19 @@ module.exports.getOne = (req, res, next) => {
         .catch(error => next(error));
 }
 
+module.exports.listAll = (req, res, next) => {
+    Commute.find()
+        .populate({path: 'driver', model: 'User' })
+        .then(commute => { 
+            if (!commute) {
+                throw createError(404, 'There is any commit :(');
+            } else {
+                res.json(commute);
+            }
+        })
+        .catch(error => next(error));
+}
+
 
 module.exports.delete = (req, res, next) => {
     Commute.findOneAndDelete({ $and: [{ _id: req.params.commuteId }, { driver: req.user.id }]})
