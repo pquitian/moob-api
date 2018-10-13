@@ -9,8 +9,7 @@ module.exports.create = (req, res, next) => {
         vehicle,
         driver,
         passengers,
-        departureTime,
-        arrivalTime
+        departureTime
     } = req.body;
 
     const commute = new Commute(req.body);
@@ -38,6 +37,7 @@ module.exports.getOne = (req, res, next) => {
 module.exports.listAll = (req, res, next) => {
     Commute.find()
         .populate({path: 'driver', model: 'User' })
+        .populate({path: 'passengers', model: 'User' })
         .then(commute => { 
             if (!commute) {
                 throw createError(404, 'There is any commit :(');
@@ -61,47 +61,49 @@ module.exports.delete = (req, res, next) => {
         .catch(error => next(error))
 }
 
+module.exports.addPassenger = (req, res, next) => {
+    Commute.findByIdAndUpdate({_id: req.params.commuteId}, {$push: { passengers: req.user.id }}, { new: true })
+        .then((commute) => {
+            if (!commute) {
+                throw createError(404, 'Commute not found');
+            } else {
+                res.status(201).json(commute);
+            }
+        })
+        .catch(error => next(error));
+}
+
 
 module.exports.filter = (req, res, next) => {
-    const dateBegin = req.query.date_from.toString();
-    const dateEnd = req.query.date_to.toString();
-
-    console.log(dateBegin)
-    //TODO: conditionals if req.query is empty
-
-    Promise.all([
-        Commute.find({
+    const dateBegin = req.query.date_from;
+    const dateEnd = req.query.date_to;
+    let criteria = {}
+    if (req.query.dest_lat && req.query.origin_lat) {
+        criteria = {
             origin: {
-                $near: 
+                $geoWithin: 
                         { 
-                            $geometry: { type: 'Point', coordinates: [req.query.from_lat, req.query.from_long] },
-                            $minDistance: 0, 
-                            $maxDistance: req.query.distance_from 
+                            $centerSphere:  [ [req.query.origin_lat, req.query.origin_lng], 10/3963.2  ]
                         }
-            }, 
-            departureTime: { 
-                $gte: new Date(dateBegin), 
-                $lt: new Date(dateEnd)  
-            }
-        
-        }),
-        Commute.find({
+            },
             destination: {
-                $near: 
-                    { 
-                        $geometry: { type: 'Point', coordinates: [req.query.to_lat, req.query.to_long] },
-                        $minDistance: 0,
-                        $maxDistance: req.query.distance_to 
-                    }
+                $geoWithin: 
+                        { 
+                            $centerSphere:  [ [req.query.dest_lat, req.query.dest_lng], 10/3963.2  ]
+                        }
             }, 
             departureTime: { 
                 $gte:new Date(dateBegin), 
                 $lt: new Date(dateEnd) 
             }
+        } 
+    }
+
+    console.log(criteria);
+
+    Commute.find(criteria)
+        .then((commutes) => {
+            res.json(commutes);
         })
-    ]).then((values) => {
-        const uniques = values.filter((el, index, arr) => arr.map(x => x.id).indexOf(el.id) === index)
-        res.json(uniques);
-    })
-    .catch(error => next(error))
+        .catch(error => next(error))
 }
