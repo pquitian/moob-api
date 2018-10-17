@@ -10,13 +10,17 @@ router.post('/',
 router.get('/',
     commutesController.listAll);
 
-/*router.get('/',
-    authMiddleware.isAuthenticated, 
-    commutesController.filter);*/
+router.get('/filter',
+    //authMiddleware.isAuthenticated, 
+    commutesController.filter);
 
 router.get('/:commuteId',
     authMiddleware.isAuthenticated, 
     commutesController.getOne);
+
+router.post('/:commuteId',
+    authMiddleware.isAuthenticated,
+    commutesController.addPassenger);
 
 router.delete('/:commuteId',
     authMiddleware.isAuthenticated,
