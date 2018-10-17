@@ -13,6 +13,8 @@ module.exports.create = (req, res, next) => {
     } = req.body;
 
     const commute = new Commute(req.body);
+    commute.origin.coordinates = origin;
+    commute.destination.coordinates = destination;
     commute.driver = req.user.id;
 
     commute.save()
@@ -24,6 +26,9 @@ module.exports.create = (req, res, next) => {
 
 module.exports.getOne = (req, res, next) => {
     Commute.findById(req.params.commuteId)
+        .populate({path: 'driver', model: 'User' })
+        .populate({path: 'passengers', model: 'User' })
+        .populate({path: 'vehicle', model: 'Vehicle' })
         .then(commute => { 
             if (!commute) {
                 throw createError(404, 'Commute not found');
@@ -38,6 +43,7 @@ module.exports.listAll = (req, res, next) => {
     Commute.find()
         .populate({path: 'driver', model: 'User' })
         .populate({path: 'passengers', model: 'User' })
+        .populate({path: 'vehicle', model: 'Vehicle' })
         .then(commute => { 
             if (!commute) {
                 throw createError(404, 'There is any commit :(');
