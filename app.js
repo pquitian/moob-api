@@ -21,6 +21,7 @@ const sessionsRouter = require('./routes/sessions.route');
 const vehiclesRouter = require('./routes/vehicles.route');
 const commutesRouter = require('./routes/commutes.route');
 const scoresRouter = require('./routes/scores.route');
+const chatRouter = require('./routes/chat.route');
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use('/sessions', sessionsRouter);
 app.use('/commutes/', commutesRouter);
 app.use('/scores', scoresRouter);
 app.use('/users/:userId/vehicles', vehiclesRouter);
+app.use('/users/:authId/messages', chatRouter);
 
 
 app.use(function (req, res, next) {
