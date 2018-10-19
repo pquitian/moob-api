@@ -27,10 +27,11 @@ const commuteSchema = new mongoose.Schema({
             required: true
         } 
     },
+    hrOrigin: String,
+    hrDestination: String,    
     vehicle: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Vehicle'
-
     },
     driver: {
         type: mongoose.Schema.Types.ObjectId,
@@ -46,10 +47,6 @@ const commuteSchema = new mongoose.Schema({
         //TODO: validate date (not before right now)
         type: Date,
         required: 'Departure time is required'
-    }, 
-    arrivalTime: {
-        type: Date, 
-        required: 'Arrival time is required'
     }
 }, {
     timestamps: true, 
@@ -57,7 +54,6 @@ const commuteSchema = new mongoose.Schema({
         transform: (doc, ret) => {
             ret.id = doc._id;
             ret.departureTime = doc.departureTime.toLocaleString();
-            ret.arrivalTime = doc.arrivalTime.toLocaleString();
             const origin = doc.origin.coordinates;
             const destination = doc.destination.coordinates;
             delete ret.origin;

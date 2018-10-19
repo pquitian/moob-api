@@ -40,13 +40,14 @@ module.exports.getOne = (req, res, next) => {
 }
 
 module.exports.listAll = (req, res, next) => {
+    console.log('USER', req.user)
     Commute.find()
         .populate({path: 'driver', model: 'User' })
         .populate({path: 'passengers', model: 'User' })
         .populate({path: 'vehicle', model: 'Vehicle' })
         .then(commute => { 
             if (!commute) {
-                throw createError(404, 'There is any commit :(');
+                throw createError(404, 'There is any commute :(');
             } else {
                 res.json(commute);
             }
@@ -108,6 +109,9 @@ module.exports.filter = (req, res, next) => {
     console.log(criteria);
 
     Commute.find(criteria)
+        .populate({path: 'driver', model: 'User' })
+        .populate({path: 'passengers', model: 'User' })
+        .populate({path: 'vehicle', model: 'Vehicle' })
         .then((commutes) => {
             res.json(commutes);
         })

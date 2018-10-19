@@ -49,8 +49,8 @@ app.use('/users', usersRouter);
 app.use('/sessions', sessionsRouter);
 app.use('/commutes/', commutesRouter);
 app.use('/scores', scoresRouter);
-app.use('/users/:userId/vehicles', vehiclesRouter);
 app.use('/users/:authId/messages', chatRouter);
+app.use('/users/:userId/vehicles', vehiclesRouter);
 
 
 app.use(function (req, res, next) {

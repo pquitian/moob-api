@@ -11,21 +11,14 @@ const vehicleSchema = new mongoose.Schema({
         required: 'Model is required'
     },
     seats: {
-        type: Number,
-        required: 'Number of seats is required'
+        type: Number
     }, 
     year: String,
     image: {
         type: String, 
         default: ''
         //TODO: add default image
-    }, 
-    licensePlate: {
-        type: String,
-        unique: true, 
-        required: 'License Plate is required just for security purposes'
-        //TODO: add validation max number and match
-    }, 
+    },
     fuel: {
         type: String,
         enum: ['gasoline', 'diesel', 'hybrid', 'electric', 'LPG']

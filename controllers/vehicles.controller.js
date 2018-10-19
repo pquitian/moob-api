@@ -4,25 +4,20 @@ const Vehicle = require('../models/vehicle.model');
 const User = require('../models/user.model');
 
 module.exports.create = (req, res, next) => {
-    //TODO: quitar buscar por matrícula para validar
-    Vehicle.findOne({ licensePlate: req.body.licensePlate })
+    const vehicle = new Vehicle(req.body);
+    vehicle.save()
         .then(vehicle => {
-            if (!vehicle) {
-                vehicle = new Vehicle(req.body);
-                if (req.files) {
-                    vehicle.image = `${req.protocol}://${req.get('host')}/uploads/${file.filename}`;
-                }
-                vehicle.save()
-                    .then(vehicle => {
-                        User.findByIdAndUpdate({ _id: req.user.id }, {$push: { vehicles: vehicle.id }}, { new: true })
-                            .then(result => res.status(201).json(result))
-                    })
-            } else {
-                throw createError(409, `Vehicle with ${req.body.licensePlate} is already registered`);
-            }
+            User.findByIdAndUpdate({ _id: req.user.id }, {$push: { vehicles: vehicle.id }}, { new: true })
+                .then(response => {
+                    if (!user) {
+                        throw createError(404, 'User not found');
+                    } else {
+                        res.status(201).json(user)
+                    }
+                })
+                
         })
-        .catch(error => next(error))
-
+        .catch(error => next(error));
 };
 
 module.exports.get = (req, res, next) => {
