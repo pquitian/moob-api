@@ -1,7 +1,4 @@
-const originsAllowed = process.env.CORS || [
-    'http://localhost:3000',
-    'http://localhost:4200'
-  ];
+const originsAllowed = process.env.CORS ? [process.env.CORS] : ['http://localhost:3000','http://localhost:4200'];
   
   module.exports = {
     origin: function(origin, next) {
