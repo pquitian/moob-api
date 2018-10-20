@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const SALT_FACTOR = process.env.SALT_FACTOR; 
+const SALT_FACTOR = 10; 
 const Vehicle = require('./vehicle.model');
 
 const userSchema = new mongoose.Schema({
