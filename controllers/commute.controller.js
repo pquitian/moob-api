@@ -15,6 +15,7 @@ module.exports.create = (req, res, next) => {
     const commute = new Commute(req.body);
     commute.origin.coordinates = origin;
     commute.destination.coordinates = destination;
+    commute.vehicle = vehicle.id;
     commute.driver = req.user.id;
 
     commute.save()

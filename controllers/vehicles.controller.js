@@ -8,6 +8,7 @@ module.exports.create = (req, res, next) => {
     vehicle.save()
         .then(vehicle => {
             User.findOneAndUpdate({ _id: req.user.id }, {$push: { vehicles: vehicle._id }}, { new: true })
+            .populate({path: 'vehicles', model: 'Vehicle' })
             .then(user => {
                     if (!user) {
                         throw createError(404, 'User not found');
