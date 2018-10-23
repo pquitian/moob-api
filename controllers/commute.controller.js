@@ -11,7 +11,7 @@ module.exports.create = (req, res, next) => {
         passengers,
         departureTime
     } = req.body;
-
+    
     const commute = new Commute(req.body);
     commute.origin.coordinates = origin;
     commute.destination.coordinates = destination;
@@ -70,6 +70,9 @@ module.exports.delete = (req, res, next) => {
 
 module.exports.addPassenger = (req, res, next) => {
     Commute.findByIdAndUpdate({_id: req.params.commuteId}, {$push: { passengers: req.user.id }}, { new: true })
+        .populate({path: 'driver', model: 'User' })
+        .populate({path: 'passengers', model: 'User' })
+        .populate({path: 'vehicle', model: 'Vehicle' })
         .then((commute) => {
             if (!commute) {
                 throw createError(404, 'Commute not found');

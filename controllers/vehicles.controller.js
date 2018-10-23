@@ -7,12 +7,12 @@ module.exports.create = (req, res, next) => {
     const vehicle = new Vehicle(req.body);
     vehicle.save()
         .then(vehicle => {
-            User.findByIdAndUpdate({ _id: req.user.id }, {$push: { vehicles: vehicle.id }}, { new: true })
-                .then(response => {
+            User.findOneAndUpdate({ _id: req.user.id }, {$push: { vehicles: vehicle._id }}, { new: true })
+            .then(user => {
                     if (!user) {
                         throw createError(404, 'User not found');
                     } else {
-                        res.status(201).json(user)
+                        res.status(201).json(user);
                     }
                 })
                 
