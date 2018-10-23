@@ -94,13 +94,13 @@ module.exports.filter = (req, res, next) => {
             origin: {
                 $geoWithin: 
                         { 
-                            $centerSphere:  [ [req.query.origin_lat, req.query.origin_lng], 10/3963.2  ]
+                            $centerSphere:  [ [req.query.origin_lat, req.query.origin_lng], 2/3963.2  ]
                         }
             },
             destination: {
                 $geoWithin: 
                         { 
-                            $centerSphere:  [ [req.query.dest_lat, req.query.dest_lng], 10/3963.2  ]
+                            $centerSphere:  [ [req.query.dest_lat, req.query.dest_lng], 2/3963.2  ]
                         }
             }, 
             departureTime: { 
@@ -110,7 +110,7 @@ module.exports.filter = (req, res, next) => {
         } 
     }
 
-    console.log(criteria);
+    console.log(JSON.stringify(criteria));
 
     Commute.find(criteria)
         .populate({path: 'driver', model: 'User' })
@@ -120,4 +120,43 @@ module.exports.filter = (req, res, next) => {
             res.json(commutes);
         })
         .catch(error => next(error))
+
+    /*const dateBegin = req.query.date_from;
+    const dateEnd = req.query.date_to;
+
+    Promise.all([
+        Commute.find({
+            origin: {
+                $geoWithin: 
+                        { 
+                            $centerSphere:  [ [req.query.origin_lat, req.query.origin_lng], 2/3963.2  ]
+                        }
+            }, 
+            departureTime: { 
+                $gte:new Date(dateBegin), 
+                $lt: new Date(dateEnd) 
+            }
+        })
+        ,
+        Commute.find({
+            destination: {
+                $geoWithin: 
+                        { 
+                            $centerSphere:  [ [req.query.dest_lat, req.query.dest_lng], 2/3963.2  ]
+                        }
+            }, 
+            departureTime: { 
+                $gte:new Date(dateBegin), 
+                $lt: new Date(dateEnd) 
+            }
+
+        })
+        
+    ])
+    .then((values) => {
+        const uniques = values.filter((el, index, arr) => arr.map(x => x.id).indexOf(el.id) === index)
+        console.log('UNIQUES', uniques);
+        res.json(uniques)
+    })
+        .catch(error => next(error));*/
 }
