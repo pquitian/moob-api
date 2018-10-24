@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const moment = require('moment');
 
 const chatSchema = new mongoose.Schema({
     from: {
@@ -20,6 +20,7 @@ const chatSchema = new mongoose.Schema({
     toJSON: {
         transform: (doc, ret) => {
             ret.id = doc._id;
+            ret.createdAt = moment().to(doc.createdAt);
             delete ret._id;
             delete ret.__v;
         }

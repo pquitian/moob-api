@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('./user.model');
 const Vehicle = require('./vehicle.model');
+const moment = require('moment');
 
 const commuteSchema = new mongoose.Schema({
     origin: {
@@ -53,7 +54,8 @@ const commuteSchema = new mongoose.Schema({
     toJSON: {
         transform: (doc, ret) => {
             ret.id = doc._id;
-            ret.departureTime = doc.departureTime.toLocaleString();
+            ret.departureTime = moment(doc.departureTime).format('lll');
+            // ret.departureTime = doc.departureTime.toLocaleString();
             const origin = doc.origin.coordinates;
             const destination = doc.destination.coordinates;
             delete ret.origin;
