@@ -84,6 +84,37 @@ module.exports.addPassenger = (req, res, next) => {
         .catch(error => next(error));
 }
 
+module.exports.listDriverCommutes = (req,res,next) => {
+    Commute.find({driver: req.user.id})
+        .populate({path: 'driver', model: 'User' })
+        .populate({path: 'passengers', model: 'User' })
+        .populate({path: 'vehicle', model: 'Vehicle' })
+        .then((commutes) => {
+            if (!commutes) {
+                throw createError(404, 'No commutes founded');
+            } else {
+                res.status(201).json(commutes);
+            }
+        })
+        .catch(error => next(error));
+}
+
+module.exports.listUserAsPassenger = (req, res, next) => {
+    Commute.find({ passengers: { $in: [ req.user.id ] } })
+        .populate({path: 'driver', model: 'User' })
+        .populate({path: 'passengers', model: 'User' })
+        .populate({path: 'vehicle', model: 'Vehicle' })
+        .then((commutes) => {
+            if (!commutes) {
+                throw createError(404, 'No commutes founded');
+            } else {
+                res.status(201).json(commutes);
+            }
+        })
+        .catch((error) => next(error));
+
+}
+
 
 module.exports.filter = (req, res, next) => {
     const dateBegin = req.query.date_from;

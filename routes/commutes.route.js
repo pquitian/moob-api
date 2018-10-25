@@ -11,8 +11,16 @@ router.get('/',
     commutesController.listAll);
 
 router.get('/filter',
-    //authMiddleware.isAuthenticated, 
+    authMiddleware.isAuthenticated, 
     commutesController.filter);
+
+router.get('/getall',
+    authMiddleware.isAuthenticated,
+    commutesController.listDriverCommutes);
+
+router.get('/listpassenger',
+    authMiddleware.isAuthenticated,
+    commutesController.listUserAsPassenger);
 
 router.get('/:commuteId',
     authMiddleware.isAuthenticated, 
